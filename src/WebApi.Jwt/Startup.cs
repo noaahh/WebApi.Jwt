@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,7 +40,7 @@ namespace WebApi.Jwt
             // EF Contexts
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Default"),
-                    b => b.MigrationsAssembly("Web.Api.Infrastructure")));
+                    b => b.MigrationsAssembly("Web.Api.Jwt.Infrastructure")));
 
             // Register the ConfigurationBuilder instance of AppSettings
             var authSettings = Configuration.GetSection(nameof(AuthSettings));
@@ -112,19 +111,7 @@ namespace WebApi.Jwt
             // Swagger
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info {Title = "AspNetCoreApiIdentity", Version = "v1"});
-                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
-                {
-                    In = "header",
-                    Description = "Please insert JWT with Bearer into field",
-                    Name = "Authorization",
-                    Type = "apiKey"
-                });
-
-                c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
-                {
-                    {"Bearer", new string[] { }}
-                });
+                c.SwaggerDoc("v1", new Info {Title = "WebApi.Jwt", Version = "v1"});
             });
 
 
@@ -159,7 +146,7 @@ namespace WebApi.Jwt
                 });
 
             // Swagger
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "AspNetCoreApiIdentity V1"); });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi.Jwt v1"); });
             app.UseSwagger();
 
             app.UseAuthentication();
